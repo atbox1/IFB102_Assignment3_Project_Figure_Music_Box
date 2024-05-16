@@ -99,15 +99,13 @@ class LEDsystem:
                 GPIO.setup(self.LED, GPIO.OUT)
                 GPIO.output(self.LED, self.PowerState[boolean])
 
-
-
-    def CoolLookingThings (self, Pattern = 1, time = 1):
-        while True:
-            for self.LED in self.LEDs:
-                GPIO.setup(self.LED, GPIO.OUT)
-                GPIO.output(self.LED, GPIO.HIGH)
-                sleep(time)
-                GPIO.output(self.LED, GPIO.LOW)
+    # def CoolLookingThings (self, Pattern = 1, time = 1):
+    #     while True:
+    #         for self.LED in self.LEDs:
+    #             GPIO.setup(self.LED, GPIO.OUT)
+    #             GPIO.output(self.LED, GPIO.HIGH)
+    #             sleep(time)
+    #             GPIO.output(self.LED, GPIO.LOW)
 
     def PatternMaker(self, pattern):
 
@@ -156,34 +154,43 @@ class LEDsystem:
                     , 16, 12, 20, 21, time=delayList[1])
 
 
-class Button:
-    pass
+# class Button:
+#     def __init__(self, pin):
+#         self.pin = pin
+#         GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+#
 
 class Main:
     MotorObject = DriveMotor(6, 5, 11)
     BuzzerObject = Buzzer(SongsMidi.RusAntheme)
     LEDObject = LEDsystem()
+    GPIO.setup(26, GPIO.IN)
     #Test = Patterns(1)
 
     #MotorObject.Stop()
 
 
     while True:
-        #MotorObject.Drive('F', 100 )
-        #BuzzerObject.Play()
+        if GPIO.input(26) == GPIO.HIGH:
 
-        # sleep(0.1)
-        LEDObject.PatternMaker(5)
-        #MotorObject.Stop()
-        #sleep(0.1)
-        #LEDObject.PowerStates[0]
 
-        pass
+            MotorObject.Drive('F', 50 )
+            #BuzzerObject.Play()
+
+            # sleep(0.1)
+            LEDObject.PatternMaker(5)
+            #MotorObject.Stop()
+            #sleep(0.1)
+            #LEDObject.PowerStates[0]
+        elif GPIO.input(26) == GPIO.LOW:
+            LEDObject.PatternMaker(1)
+
+
 
 
     #MotorObject.Stop()
     #LEDObject.PowerStates(0)
-    GPIO.cleanup()
+    #GPIO.cleanup()
 
 
 
