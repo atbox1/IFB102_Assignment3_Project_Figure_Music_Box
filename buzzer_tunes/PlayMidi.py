@@ -12,7 +12,14 @@ class RunSong:
 
         self.mySong = music(song, pins=[Pin(22)])
 
+        #self.stop = music(duty = 0,  pins=[Pin(22)])
+
         while True:
-            print(self.mySong.tick())
+            self.mySong.tick()
             sleep(0.04)
+            #self.mySong.stop()
+
+
+    def Stopper(self):
+        self.mySong.killswitch()
 

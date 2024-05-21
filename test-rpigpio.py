@@ -2,6 +2,7 @@ import sys
 sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
 import RPi.GPIO as GPIO
 import random
+from gpiozero import Button 
 from time import sleep
 #Importing @... from foldar
 from buzzer_tunes import PlayMidi, SongsMidi, buzzer_music, machine
@@ -44,8 +45,6 @@ class DriveMotor:
         self.PWM.start(0)  # Starting Duty %
 
     def Drive(self, polarity = 'B', speed=15):
-
-        #IF/ELSE Statement for choosing between Forward or Backward motor.
         if polarity == 'F':
             GPIO.output(self.input1, GPIO.LOW)
             GPIO.output(self.input2, GPIO.HIGH)
@@ -58,14 +57,23 @@ class DriveMotor:
         self.PWM.ChangeDutyCycle(0)
 
 class Buzzer:
-    def __init__(self, Song):
-        self.Song = Song
+    def __init__(self, song):
+        #self.Song = Song
+        self.song = song
+        self.mySong = buzzer_music.music(self.song, pins=[machine.Pin(22)])
 
-    def Play(self):
-        PlayMidi.RunSong(self.Song)
-
+    # def Play(self):
+    #     # PlayMidi.RunSong(SongsMidi.JingleBells)
+    #
+    #
     def Stop(self):
-        a = machine.Stop()
+        #PlayMidi.RunSong(self.Stop())
+        #machine.Stop(22)
+        #buzzer_music.music.stop()
+
+        pass
+
+
 
 class Patterns:
 
@@ -80,8 +88,8 @@ class Patterns:
                 GPIO.output(LED, GPIO.HIGH)
                 sleep(time)
                 GPIO.output(LED, GPIO.LOW)
-            else:
-                pass
+
+
 
 class LEDsystem:
     def __init__(self):
@@ -98,8 +106,9 @@ class LEDsystem:
             for self.LED in self.LEDs:
                 GPIO.setup(self.LED, GPIO.OUT)
                 GPIO.output(self.LED, self.PowerState[boolean])
+            #break
 
-    # def CoolLookingThings (self, Pattern = 1, time = 1):
+    # def CoolLookingThings (self, Pattern = 1, time = 3):
     #     while True:
     #         for self.LED in self.LEDs:
     #             GPIO.setup(self.LED, GPIO.OUT)
@@ -112,16 +121,18 @@ class LEDsystem:
         PatternObject = Patterns()
         delayList = [0.3, 0.4, 0.08, 1]
 
+
+        #while True:
         match pattern:
             case 1:
-                while True:
+                #while True:
                 #Sides Style
                     PatternObject.ModifyList(14, 18, 23, 15, delayList[0])
                     sleep(delayList[3])
                     PatternObject.ModifyList(16, 12, 20, 21, delayList[0])
             case 2:
                 #Alternating between Colours
-                while True:
+                #while True:
                     PatternObject.ModifyList(14, 16, time = delayList[1])
                     PatternObject.ModifyList(18, 12, time = delayList[1])
                     PatternObject.ModifyList(23, 20, time = delayList[1])
@@ -129,12 +140,12 @@ class LEDsystem:
 
             case 3:
                 #Rotate through LEDs
-                while True:
+                #while True:
                     PatternObject.ModifyList(14, 18, 23, 15
                     , 21, 20, 12, 16, time=0.08)
             case 4:
                 #Checkers
-                while True:
+                #while True:
                     PatternObject.ModifyList(14, 21, time = delayList[1])
                     sleep(delayList[5])
                     PatternObject.ModifyList(15, 16, time = delayList[1])
@@ -145,13 +156,16 @@ class LEDsystem:
 
             case 5:
                 #Random Order
-                while True:
+                #while True:
                     random.shuffle(self.LEDs)
                     print(self.LEDs)
                     PatternObject.ModifyList(self.LEDs[0], self.LEDs[1], self.LEDs[2], self.LEDs[3], self.LEDs[4], self.LEDs[5], self.LEDs[6], self.LEDs[7], time=delayList[1])
             case _:
+                #while True:
                 PatternObject.ModifyList(14, 18, 23, 15
-                    , 16, 12, 20, 21, time=delayList[1])
+                    , 16, 12, 20, 21, time=delayList[0])
+                    #pass
+
 
 
 # class Button:
@@ -161,34 +175,81 @@ class LEDsystem:
 #
 
 class Main:
+    button = Button(26)
     MotorObject = DriveMotor(6, 5, 11)
-    BuzzerObject = Buzzer(SongsMidi.RusAntheme)
     LEDObject = LEDsystem()
-    GPIO.setup(26, GPIO.IN)
+
+
+    # MotorObject = DriveMotor(6, 5, 11)
+    #PressButton = Button(26)
+    # LEDObject = LEDsystem()
+    # GPIO.setup(26, GPIO.IN)
+    # SlideButton = GPIO.input(26)
     #Test = Patterns(1)
 
     #MotorObject.Stop()
-
-
+    BuzzerObject = Buzzer(SongsMidi.SimpleRhythme)
     while True:
-        if GPIO.input(26) == GPIO.HIGH:
+
+        if button.is_pressed:
 
 
-            MotorObject.Drive('F', 50 )
-            #BuzzerObject.Play()
-
-            # sleep(0.1)
-            LEDObject.PatternMaker(5)
-            #MotorObject.Stop()
-            #sleep(0.1)
-            #LEDObject.PowerStates[0]
-        elif GPIO.input(26) == GPIO.LOW:
+            BuzzerObject.mySong.tick()
+            sleep(0.04)
             LEDObject.PatternMaker(1)
+        else:
+            BuzzerObject.mySong.stop()
+            print("0")
+            pass
+
+    # if button.is_pressed:
+    #     while True:
+    #         BuzzerObject.mySong.tick()
+    #         sleep(0.04)
+    # else:
+    #     print("E")
+
+    # while True:
+
+    #PressButton.wait_for_press()
+
+    # while True:
+    #     MotorObject.Drive('F', 25 )
+    # #BuzzerObject.Play()
+    # # sleep(0.1)
+    # #LEDObject.CoolLookingThings
+    # #MotorObject.Stop()
+    # #sleep(0.1)
+    # #LEDObject.PowerStates[0]
+    # #LEDObject.PatternMaker(8)
+    #     PatternObject = Patterns()
+    #     delayList = [0.3, 0.4, 0.08, 1]
+    #
+    #     PatternObject.ModifyList(14, 18, 23, 15
+    #                              , 16, 12, 20, 21, time=delayList[0])
+    #     break
+    #
+
+    #sleep(0.6)
+    #
+    # PressButton.wait_for_press()
+    #
+    # MotorObject.Stop()
+    # LEDObject.PowerStates(0)
 
 
 
 
-    #MotorObject.Stop()
+
+
+
+
+
+# PressButton.wait_for_press()
+# MotorObject.Stop()
+# sleep(400)
+
+#MotorObject.Stop()
     #LEDObject.PowerStates(0)
     #GPIO.cleanup()
 

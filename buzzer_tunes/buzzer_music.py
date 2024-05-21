@@ -210,6 +210,8 @@ class music:
             self.pwms.append(PWM(pin))
         self.stopped = False
 
+    def killswitch(self):
+        quit()
     def tick(self):
         if (not self.stopped):
             self.timer = self.timer + 1
