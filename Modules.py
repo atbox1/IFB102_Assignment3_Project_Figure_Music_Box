@@ -5,7 +5,7 @@ import random
 import threading
 from gpiozero import Button 
 from time import sleep
-#Importing @... from foldar
+#Importing Modules from foldar
 from buzzer_tunes import PlayMidi, SongsMidi, buzzer_music, machine
 
 
@@ -27,11 +27,7 @@ GPIO.setwarnings(False)
 #A: R 14, O 15, G 18, W 5
 #B R 16, O 12
 
-PressButton = Button(26)
-
-
-
-
+#PressButton = Button(26)
 class DriveMotor:
     #Low High is backwards
     #High LOW is farward
@@ -64,32 +60,18 @@ class DriveMotor:
         self.PWM.ChangeDutyCycle(0)
 
 class Buzzer:
-    def __init__(self, song):
-        VariableA = buzzer_music
-        #self.Song = Song
+    def __init__(self, song, Button):
         self.song = song
         self.mySong = buzzer_music.music(self.song, pins=[machine.Pin(22)])
-
-
-
-    # def Play(self):
-    #     PlayMidi.RunSong(SongsMidi.JingleBells)
+        self.Button = Button
 
     def Play(self):
-        #while PressButton.value == 1:
-        while PressButton.value == 1:
+        while self.Button.value == 1:
             sleep(0.04)
             self.mySong.tick()
 
 
-
-
-
-
 class Patterns:
-
-    # def __init__(self, pattern):
-    #     self.pattern = pattern
     def ModifyList(self, i = 0, ii = 0, iii = 0, iv = 0, v = 0, vi = 0, vii = 0, viii = 0, time = 0.1):
 
 
@@ -102,13 +84,13 @@ class Patterns:
                 GPIO.output(LED, GPIO.LOW)
 
 class LEDsystem:
-    def __init__(self):
-        #self.Pattern = Pattern
-
+    def __init__(self, Button):
         self.LEDs = [14, 18, 23, 15
                     , 16, 12, 20, 21]
         self.PowerState = [GPIO.LOW, GPIO.HIGH]
         self.LED = None
+        self.Button = Button
+
 
 
     def PowerStates (self, boolean):
@@ -116,22 +98,13 @@ class LEDsystem:
             for self.LED in self.LEDs:
                 GPIO.setup(self.LED, GPIO.OUT)
                 GPIO.output(self.LED, self.PowerState[boolean])
-            #break
-
-    # def CoolLookingThings (self, Pattern = 1, time = 3):
-    #     while True:
-    #         for self.LED in self.LEDs:
-    #             GPIO.setup(self.LED, GPIO.OUT)
-    #             GPIO.output(self.LED, GPIO.HIGH)
-    #             sleep(time)
-    #             GPIO.output(self.LED, GPIO.LOW)
 
     def PatternMaker(self, pattern):
 
         PatternObject = Patterns()
         delayList = [0.3, 0.4, 0.08, 1]
 
-        while PressButton.value == 1:
+        while self.Button.value == 1:
             match pattern:
                 case 1:
                         PatternObject.ModifyList(14, 18, 23, 15, delayList[0])
@@ -163,48 +136,48 @@ class LEDsystem:
                     PatternObject.ModifyList(14, 18, 23, 15
                         , 16, 12, 20, 21, time=delayList[0])
 
-class Main:
-
-
-    def __init__(self):
-        self.MotorObject = DriveMotor(6, 5, 11)
-        self.BuzzerObject = Buzzer(SongsMidi.JingleBells)
-        self.LEDObject = LEDsystem()
-        self.RunInstance()
-
-
-    def RunInstance(self):
-        while True:
-
-            if PressButton.value == 1:
-
-                LEDThread = threading.Thread(target=self.LEDObject.PatternMaker, args=(1,))
-                BuzzerThread = threading.Thread(target=self.BuzzerObject.Play)
-                self.MotorObject.Drive('B', 25)
-
-                LEDThread.start()
-                BuzzerThread.start()
-
-                LEDThread.join()
-                BuzzerThread.join()
-
-                sleep(0.5)
-
-            else:
-                sleep(0.5)
-                self.MotorObject.Stop()
-
-                continue
-
-
-
-
-
-
-
-
-
-
-
-MainInstance = Main()
+# class Main:
+#
+#
+#     def __init__(self):
+#         self.MotorObject = DriveMotor(6, 5, 11)
+#         self.BuzzerObject = Buzzer(SongsMidi.JingleBells)
+#         self.LEDObject = LEDsystem()
+#         self.RunInstance()
+#
+#
+#     def RunInstance(self):
+#         while True:
+#
+#             if PressButton.value == 1:
+#
+#                 LEDThread = threading.Thread(target=self.LEDObject.PatternMaker, args=(1,))
+#                 BuzzerThread = threading.Thread(target=self.BuzzerObject.Play)
+#                 self.MotorObject.Drive('B', 25)
+#
+#                 LEDThread.start()
+#                 BuzzerThread.start()
+#
+#                 LEDThread.join()
+#                 BuzzerThread.join()
+#
+#                 sleep(0.5)
+#
+#             else:
+#                 sleep(0.5)
+#                 self.MotorObject.Stop()
+#
+#                 continue
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# MainInstance = Main()
 
