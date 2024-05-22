@@ -67,8 +67,9 @@ class Buzzer:
 
     def Play(self):
         while self.Button.value == 1:
-            sleep(0.04)
             self.mySong.tick()
+            sleep(0.04)
+
 
 
 class Patterns:
