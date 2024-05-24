@@ -17,7 +17,7 @@ button = Button(26)
 
 buzzer = TonalBuzzer(22)
 
-buzzer.play(Tone(220.0))
+#buzzer.play(Tone(220.0))
 
 #buzzer.stop()
 

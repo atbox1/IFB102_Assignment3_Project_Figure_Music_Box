@@ -6,11 +6,23 @@ from buzzer_tunes import PlayMidi, SongsMidi, buzzer_music, machine
 
 from gpiozero import Button
 from time import sleep
-import threading
+from threading import Thread
+from flask import Flask
 
 PressButton = Button(26)
 
+app = Flask(__name__)
+
 #class
+
+class RunFlask:
+    def __init__(self):
+        if __name__ == '__main__':
+            app.run()
+
+    @app.route('/')
+    def HomeScreen(self):
+        pass
 
 
 
@@ -21,9 +33,12 @@ class Main:
 
     def __init__(self):
         self.MotorObject = DriveMotor(6, 5, 11)
-        self.BuzzerObject = Buzzer(SongsMidi.SimpleRhythme, PressButton)
+        self.BuzzerObject = Buzzer(SongsMidi.Chrismas_Music , PressButton)
         self.LEDObject = LEDsystem(PressButton)
         self.RunInstance()
+        self.FlaskInstance = RunFlask
+
+
 
 
     def RunInstance(self):
@@ -31,26 +46,60 @@ class Main:
 
 
             if PressButton.value == 1:
+
                 self.BuzzerObject.mySong.restart()
-                sleep(0.04)
-                LEDThread = threading.Thread(target=self.LEDObject.PatternMaker, args=(1,))
-                BuzzerThread = threading.Thread(target=self.BuzzerObject.Play)
-                self.MotorObject.Drive('B', 25)
+                sleep(0.0001)
+
+                LEDThread = Thread(target=self.LEDObject.PatternMaker, args=(1,), daemon=True)
+                BuzzerThread = Thread(target=self.BuzzerObject.Play, daemon=True)
+
+                self.MotorObject.Drive('B', 20)
 
                 LEDThread.start()
                 BuzzerThread.start()
 
+
                 LEDThread.join()
                 BuzzerThread.join()
 
-                #sleep(0.5)
+
+
 
             else:
-                #sleep(0.5)
+
                 self.MotorObject.Stop()
                 self.BuzzerObject.mySong.stop()
 
-                continue
+            continue
+
+
+
+
+
+# if __name__ == '__main__':
+#    app.run()
+flaskThread = Thread(target=RunFlask, daemon=True)
+Maininstance = Thread(target=Main, daemon=True)
+
+flaskThread.start()
+Maininstance.start()
+
+flaskThread.join()
+Maininstance.join()
+
+#MainInstance = Main()
+
+
+
+
+# RunFlask.start()
+#MainInstance.start()
+
+
+
+# RunFlask.join()
+
+#MainInstance.join()
 
 
 
@@ -61,4 +110,5 @@ class Main:
 
 
 
-MainInstance = Main()
+
+
