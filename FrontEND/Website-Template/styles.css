@@ -1,0 +1,118 @@
+:root {
+    --red: #F44336;
+    --dark-red: #D32F2F;
+    --light-orange: #F59660;
+    --medium-orange: #F5B160;
+    --yellow: #FFC46C;
+    --light-yellow: #F7D488;
+    --dark-orange: #D46600;
+    --white: #FFFFFF;
+    --light-green: #F1FFC4;
+    --light-blue: #A7BED3;
+    --black: #000000;
+}
+
+body {
+    background-color: var(--light-yellow);
+    font-family: Arial, sans-serif;
+    color: var(--black);
+}
+
+.app-name {
+    background-color: var(--red);
+    color: var(--white);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: var(--dark-red);
+    margin-bottom: 20px;
+}
+
+.icon img {
+    width: 100px;
+}
+
+.section {
+    background-color: var(--light-orange);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.section-header {
+    background-color: var(--medium-orange);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.motor-settings .speed-options .btn-speed,
+.lights-pattern .btn-pattern {
+    background-color: var(--light-blue);
+    border: 2px solid var(--light-blue);
+    color: var(--black);
+    margin-right: 5px;
+    width: 80px;
+    text-align: center;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.motor-settings .btn-check,
+.lights-pattern .btn-check {
+    display: none;
+}
+
+.motor-settings .btn-check:checked + .btn-speed,
+.lights-pattern .btn-check:checked + .btn-pattern {
+    background-color: var(--dark-orange);
+    border-color: var(--dark-orange);
+}
+
+.motor-settings .btn-speed i,
+.lights-pattern .btn-pattern i {
+    margin-right: 5px;
+}
+
+.polarity-toggle .form-check-input {
+    background-color: var(--light-green);
+    border-color: var(--light-green);
+}
+
+.polarity-toggle .form-check-input:checked {
+    background-color: var(--dark-red);
+    border-color: var(--dark-red);
+}
+
+.polarity-toggle .form-check-label {
+    color: var(--black);
+}
+
+.buzzer-tune .form-select {
+    background-color: var(--white);
+    border-color: var(--light-blue);
+    color: var(--black);
+}
+
+.buzzer-tune .form-select option {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.instance-state .btn-primary {
+    background-color: var(--light-green);
+    border-color: var(--light-green);
+    color: var(--black);
+    margin-right: 10px;
+}
+
+.instance-state .btn-danger {
+    background-color: var(--dark-red);
+    border-color: var(--dark-red);
+   
