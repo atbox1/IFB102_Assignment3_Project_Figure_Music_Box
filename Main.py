@@ -1,13 +1,14 @@
 import sys
+#sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
 sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
+
 from Modules import DriveMotor, Buzzer, LEDsystem
 
 from buzzer_tunes import PlayMidi, SongsMidi, buzzer_music, machine
-
 from gpiozero import Button
 from time import sleep
 from threading import Thread
-from flask import Flask
+from flask import Flask, render_template, request
 
 PressButton = Button(26)
 
@@ -20,9 +21,14 @@ class RunFlask:
         if __name__ == '__main__':
             app.run()
 
-    @app.route('/')
-    def HomeScreen(self):
-        pass
+@app.route('/home', methods = ['GET', 'POST'])
+def HomeScreen():
+    
+    if request.method == 'POST':
+        print(request.form.get('motorSpeed'))
+        print(request.form.get('lightPattern'))
+
+    return render_template('home.html')
 
 
 
@@ -50,7 +56,7 @@ class Main:
                 self.BuzzerObject.mySong.restart()
                 sleep(0.0001)
 
-                LEDThread = Thread(target=self.LEDObject.PatternMaker, args=(1,), daemon=True)
+                LEDThread = Thread(target=self.LEDObject.PatternMaker, args=(8,), daemon=True)
                 BuzzerThread = Thread(target=self.BuzzerObject.Play, daemon=True)
 
                 self.MotorObject.Drive('B', 20)

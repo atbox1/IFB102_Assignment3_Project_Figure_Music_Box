@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Box Options</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href={{ url_for('static', filename='styles.css') }}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+
+
+<body>
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="app-name">App Name</h1>
+            <h2 class="section-title">Music Box Options</h2>
+            <div class="icon mb-4">
+                <img src="music-box-icon.png" alt="Music Box Icon">
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-header">Choose Motor Settings</h3>
+            <div class="motor-settings">
+                <div class="speed-options">
+                    <form id = "myForm" method="POST" action = "/home" >
+                        <input type="radio" class="btn-check" name="motorSpeed" id="speed25" value = 25 autocomplete="off",  onchange="submitForm()">
+                        <label class="btn btn-speed" for="speed25"><i class="fas fa-fan"></i> 25%</label>
+
+                        <input type="radio" class="btn-check" name="motorSpeed" id="speed50" value = 50 autocomplete="off",   onchange="submitForm()">
+                        <label class="btn btn-speed" for="speed50"><i class="fas fa-fan"></i> 50%</label>
+
+                        <input type="radio" class="btn-check" name="motorSpeed" id="speed75" value = 75 autocomplete="off",   onchange="submitForm()">
+                        <label class="btn btn-speed" for="speed75"><i class="fas fa-fan"></i> 75%</label>
+
+                        <input type="radio" class="btn-check" name="motorSpeed" id="speed100" value = 100 autocomplete="off",   onchange="submitForm()">
+                        <label class="btn btn-speed" for="speed100"><i class="fas fa-fan"></i> 100%</label>
+
+                        <!-- input type = "submit" value="Submit" -->
+                    </form>
+                </div>
+
+                <div class="form-check form-switch">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="polaritySwitch" checked>
+                        <label class="form-check-label" for="polaritySwitch" id="polarityLabel">Forward</label>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-header">Lights Pattern</h3>
+            <div class="lights-pattern">
+                <form id = "myForm1" method="POST" action = "/home">
+                    <input type="radio" class="btn-check" name="lightPattern" id="crossSides", value = 1 autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="crossSides"><i class="fas fa-exchange-alt"></i> Cross-Sides</label>
+
+                    <input type="radio" class="btn-check" name="lightPattern" id="pairRotation" , value = 2  autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="pairRotation"><i class="fas fa-sync-alt"></i> Pair Rotation</label>
+
+                    <input type="radio" class="btn-check" name="lightPattern" id="fastCycling" , value = 3 autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="fastCycling"><i class="fas fa-tachometer-alt"></i> Fast Cycling</label>
+
+                    <input type="radio" class="btn-check" name="lightPattern" id="randomShuffle" value = 4  autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="randomShuffle"><i class="fas fa-random"></i> Random Shuffle</label>
+
+                    <input type="radio" class="btn-check" name="lightPattern" id="alternatePairs", value = 5  autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="alternatePairs"><i class="fas fa-random"></i> Alternate Pairs</label>
+
+                    <input type="radio" class="btn-check" name="lightPattern" id="normalRotation" value = 6 autocomplete="off",  onchange="submitForm1()">
+                    <label class="btn btn-pattern" for="normalRotation"><i class="fas fa-sync"></i> Normal Rotation</label>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-header">Buzzer Tune</h3>
+            <div class="buzzer-tune">
+                <select class="form-select" multiple aria-label="Select a tune">
+                    <option value="1">Tune 1</option>
+                    <option value="2">Tune 2</option>
+                    <option value="3">Tune 3</option>
+                    <option value="4">Tune 4</option>
+                    <option value="5">Tune 5</option>
+                    <option value="6">Tune 6</option>
+                    <option value="7">Tune 7</option>
+                    <option value="8">Tune 8</option>
+                    <option value="9">Tune 9</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-header">Instance State</h3>
+            <div class="instance-state">
+                <button class="btn btn-primary" id="startButton">Start</button>
+                <button class="btn btn-danger" id="stopButton">Stop</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+
+        
+        
+        function submitForm() {
+            document.getElementById('myForm').submit();
+        } 
+        function submitForm1() {
+            document.getElementById('myForm1').submit();
+        }       
+        //document.getElementById('polaritySwitch').addEventListener('change', function () {
+           // var label = document.getElementById('polarityLabel');
+            // label.textContent = this.checked ? 'Forward' : 'Backward';
+        //});
+    </script>
+</body>
+</html>

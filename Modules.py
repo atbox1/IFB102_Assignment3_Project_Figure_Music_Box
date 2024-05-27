@@ -1,5 +1,6 @@
 import sys
-sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
+sys.path.insert(1, '/home/atbox/Documents/IFB102-Assignment_3/IFB102_Assignment3_Project_Figure_Music_Box/buzzer_tunes')
+
 import RPi.GPIO as GPIO
 import random
 import threading

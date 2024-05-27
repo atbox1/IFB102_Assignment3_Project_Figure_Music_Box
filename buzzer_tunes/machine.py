@@ -6,7 +6,7 @@ class PWMchanged(GPIO.PWM):
     def __init__(self, chan, freq):
         super().__init__(chan, freq)
         self.start(freq)
-    def duty(self,dutycycle): self.ChangeDutyCycle(dutycycle/150)
+    def duty(self,dutycycle): self.ChangeDutyCycle(dutycycle/300)
     def freq(self, value): self.ChangeFrequency(value)
     def deinit(self): self.stop()
     pass
