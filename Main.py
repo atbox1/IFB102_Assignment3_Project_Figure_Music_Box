@@ -1,18 +1,25 @@
 import sys
-#sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
 sys.path.insert(1, '/home/atbox/Documents/IFB102_Assignment3_Project/buzzer_tunes/')
 
 from Modules import DriveMotor, Buzzer, LEDsystem
+from inspect import getmembers, isfunction
 
 from buzzer_tunes import PlayMidi, SongsMidi, buzzer_music, machine
 from gpiozero import Button
 from time import sleep
 from threading import Thread
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, g
+
+
+
 
 PressButton = Button(26)
 
 app = Flask(__name__)
+app.secret_key = 'secret!'
+
+
+
 
 #class
 
@@ -20,18 +27,37 @@ class RunFlask:
     def __init__(self):
         if __name__ == '__main__':
             app.run()
+        
 
-@app.route('/home', methods = ['GET', 'POST'])
+@app.route('/HOME', methods = ['GET', 'POST'])
 def HomeScreen():
+    InstanceOptionsDict = {
+        "state": [],
+        "MotorSpeed": [],
+        "Polarity": [],
+        "LightPattern": [],
+        "BuzzerTone": []
+    }
     
-    if request.method == 'POST':
-        print(request.form.get('motorSpeed'))
-        print(request.form.get('lightPattern'))
+    
+    MusicList = dir(SongsMidi)
+    RemoveList = ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']    
+    
+    for Word in range(0, len(RemoveList)):
+        MusicList.remove(RemoveList[Word])
+    
+    session["A"] = InstanceOptionsDict
 
-    return render_template('home.html')
-
-
-
+    session["A"]["state"].append(request.form.get('instanceState'))
+    session["A"]["MotorSpeed"].append(request.form.get('motorSpeed'))
+    InstanceOptionsDict["Polarity"].append(request.form.get('inlineRadioOptions'))
+    InstanceOptionsDict["LightPattern"].append(request.form.get('lightPattern'))
+    InstanceOptionsDict["BuzzerTone"].append(request.form.get('MusicSelect'))
+    
+    
+    
+    return render_template('home.html', MusicList = MusicList), InstanceOptionsDict
+@app.route('/', methods=['GET'])
 class Main:
 #SimpleRhythme
 #Chrismas_Music
@@ -42,19 +68,14 @@ class Main:
         self.BuzzerObject = Buzzer(SongsMidi.Chrismas_Music , PressButton)
         self.LEDObject = LEDsystem(PressButton)
         self.RunInstance()
-        self.FlaskInstance = RunFlask
-
-
-
-
+        
     def RunInstance(self):
         while True:
-
-
+                        
             if PressButton.value == 1:
-
+                #self.song = Chrismas_Music
                 self.BuzzerObject.mySong.restart()
-                sleep(0.0001)
+                sleep(0.04)
 
                 LEDThread = Thread(target=self.LEDObject.PatternMaker, args=(8,), daemon=True)
                 BuzzerThread = Thread(target=self.BuzzerObject.Play, daemon=True)
@@ -69,15 +90,11 @@ class Main:
                 BuzzerThread.join()
 
 
-
-
             else:
-
-                self.MotorObject.Stop()
                 self.BuzzerObject.mySong.stop()
-
+                self.MotorObject.Stop()
+                print(session.get("A"))
             continue
-
 
 
 
@@ -85,13 +102,13 @@ class Main:
 # if __name__ == '__main__':
 #    app.run()
 flaskThread = Thread(target=RunFlask, daemon=True)
-Maininstance = Thread(target=Main, daemon=True)
+#Maininstance = Thread(target=Main, daemon=True)
 
 flaskThread.start()
-Maininstance.start()
+#Maininstance.start()
 
 flaskThread.join()
-Maininstance.join()
+#Maininstance.join()
 
 #MainInstance = Main()
 

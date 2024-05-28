@@ -25,7 +25,7 @@
             <h3 class="section-header">Choose Motor Settings</h3>
             <div class="motor-settings">
                 <div class="speed-options">
-                    <form id = "myForm" method="POST" action = "/home" >
+                    <form id = "myForm" method="POST">
                         <input type="radio" class="btn-check" name="motorSpeed" id="speed25" value = 25 autocomplete="off",  onchange="submitForm()">
                         <label class="btn btn-speed" for="speed25"><i class="fas fa-fan"></i> 25%</label>
 
@@ -41,12 +41,21 @@
                         <!-- input type = "submit" value="Submit" -->
                     </form>
                 </div>
+                <br>
+                <h3 class="section-header">Polarity Setting</h3>
 
                 <div class="form-check form-switch">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="polaritySwitch" checked>
-                        <label class="form-check-label" for="polaritySwitch" id="polarityLabel">Forward</label>
-                    </div>
+                    <form id = "myForm2" method="POST">
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="B" onchange="submitForm2()">
+                            <label class="form-check-label" for="inlineRadio1">Forward</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="F" onchange="submitForm2()">
+                            <label class="form-check-label" for="inlineRadio1">Backward</label>
+                        </div>
+                    </form>
                 </div>
                 
 
@@ -56,7 +65,7 @@
         <div class="section">
             <h3 class="section-header">Lights Pattern</h3>
             <div class="lights-pattern">
-                <form id = "myForm1" method="POST" action = "/home">
+                <form id = "myForm1" method="POST">
                     <input type="radio" class="btn-check" name="lightPattern" id="crossSides", value = 1 autocomplete="off",  onchange="submitForm1()">
                     <label class="btn btn-pattern" for="crossSides"><i class="fas fa-exchange-alt"></i> Cross-Sides</label>
 
@@ -79,25 +88,45 @@
             </div>
         </div>
 
-        <div class="section">
-            <h3 class="section-header">Buzzer Tune</h3>
-            <div class="buzzer-tune">
-                <select class="form-select" multiple aria-label="Select a tune">
-                    <option value="1">Tune 1</option>
-                    <option value="2">Tune 2</option>
-                    <option value="3">Tune 3</option>
-                    <option value="4">Tune 4</option>
-                    <option value="5">Tune 5</option>
-                    <option value="6">Tune 6</option>
-                    <option value="7">Tune 7</option>
-                    <option value="8">Tune 8</option>
-                    <option value="9">Tune 9</option>
-                </select>
+        <form id = "myForm3" method="POST" >
+
+            <div class="section">
+
+                <h3 class="section-header">Buzzer Tune</h3>
+                <div class="buzzer-tune">
+
+                        <select name="MusicSelect" class="form-select" size="10" aria-label="Select a tune" onchange="submitForm3()">
+
+                            {% for Music in MusicList %}
+                            <option data-style="btn-primary"   value={{Music}}  >{{Music}} </option>
+                            {% endfor %}
+                            
+                        </select>
+
+                </div>
+                <!-- button type="submit" class="btn btn-default">Go</button -->
+
             </div>
-        </div>
+        </form>
+
 
         <div class="section">
             <h3 class="section-header">Instance State</h3>
+                <div class="motor-settings">
+                    <div class="speed-options">
+                        <form id = "myForm4" method="POST">
+                            <input type="radio" class="btn-check" name="instanceState" id="ON" value = 1 autocomplete="off",  onchange="submitForm4()">
+                            <label class="btn btn-speed" for="ON"><i class="fas fa-fan"></i> START</label>
+    
+                            <input type="radio" class="btn-check" name="instanceState" id="OFF" value = 0 autocomplete="off",   onchange="submitForm4()">
+                            <label class="btn btn-speed" for="OFF"><i class="fas fa-fan"></i> STOP</label>
+    
+                            
+                            <!-- input type = "submit" value="Submit" -->
+                        </form>
+                    </div>
+                </div>
+        </div>
             <div class="instance-state">
                 <button class="btn btn-primary" id="startButton">Start</button>
                 <button class="btn btn-danger" id="stopButton">Stop</button>
@@ -117,7 +146,16 @@
         } 
         function submitForm1() {
             document.getElementById('myForm1').submit();
-        }       
+        }   
+        function submitForm2() {
+            document.getElementById('myForm2').submit();
+        }   
+        function submitForm3() {
+            document.getElementById('myForm3').submit();
+        }     
+        function submitForm4() {
+            document.getElementById('myForm4').submit();
+        }     
         //document.getElementById('polaritySwitch').addEventListener('change', function () {
            // var label = document.getElementById('polarityLabel');
             // label.textContent = this.checked ? 'Forward' : 'Backward';
